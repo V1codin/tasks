@@ -2,8 +2,91 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  --width: 1050px;
+  --height: 1050px;
 }
 
 body {
   background-color: #3d3d3d;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+  padding: 15px;
+  width: var(--width);
+  height: var(--height);
+  border: 3px solid #fff;
+  background-color: #8a8a8a;
+}
+.letters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: calc(var(--width) - 200px);
+}
+.numbers {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: calc(var(--height) - 200px);
+}
+.left {
+  left: 70px;
+}
+.right {
+  right: 70px;
+}
+.letters,
+.numbers > span {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 800;
+}
+.table {
+  display: flex;
+  margin: 10px auto;
+  width: 850px;
+  height: 850px;
+  border: 5px solid #8a0000;
+}
+.row {
+  display: flex;
+}
+.square {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 105px;
+  height: 105px;
+}
+.figure {
+  margin: 0 auto;
+}
+
+div[data-even="even"] > .square:nth-child(even) {
+  background-color: #000;
+}
+div[data-even="even"] > .square:nth-child(odd) {
+  background-color: #fff;
+}
+div[data-even="odd"] > .square:nth-child(even) {
+  background-color: #fff;
+}
+
+div[data-even="odd"] > .square:nth-child(odd) {
+  background-color: #000;
+}
+.row:hover,
+.column:hover {
+  cursor: pointer;
 }
