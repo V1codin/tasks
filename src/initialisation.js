@@ -9,12 +9,14 @@ export default class Initialization {
 
     document.querySelector(".table").onmouseleave = () => {
       this.selectedFigure = null;
-      this.cancelSelections(this.squares);
+      this.cancelSelections();
 
       this.squares.forEach((item) => {
         item.classList.remove("square_grey");
         item.classList.remove("square_border");
       });
+
+      this.figures.forEach((item) => item.setAttribute("draggable", false));
     };
 
     this.getSquares();
@@ -35,22 +37,23 @@ export default class Initialization {
 
         item.name = data;
         item.value = this.setts.staticValues[data];
-
-        this.selecting(item);
       });
     });
   }
 
   placeFigures() {
+    /*
     this.placePawnsToTable("blue");
     this.placePawnsToTable("yellow");
 
+    
     this.placeCastlesToTable("blue");
     this.placeCastlesToTable("yellow");
-
+ 
     this.placeKnightsToTable("blue");
     this.placeKnightsToTable("yellow");
 
+    */
     this.placeBishopsToTable("blue");
     this.placeBishopsToTable("yellow");
 
@@ -59,36 +62,6 @@ export default class Initialization {
 
     this.placeKingsToTable("blue");
     this.placeKingsToTable("yellow");
-  }
-
-  selecting(element) {
-    element.onclick = (e) => {
-      if (e.target.className.includes("square")) {
-        this.selectedFigure = e.target;
-
-        this.squares.forEach((item) => {
-          item.value.selected = false;
-
-          item.classList.add("square_grey");
-
-          item.classList.remove("square_border");
-        });
-
-        e.target.classList.add("square_border");
-        e.target.value.selected = true;
-        e.target.classList.remove("square_grey");
-
-        // move function
-      } else if (e.target.className === "figure") {
-        const figureValue = e.target.value;
-
-        console.dir(e.target);
-
-        console.log("parent value", e.target.parentElement.value);
-
-        this.posibleMoves(figureValue);
-      }
-    };
   }
 
   addingFigureToValue(id, figure, figures) {
@@ -109,7 +82,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/knight2.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "knight";
@@ -134,7 +106,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/knight.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "knight";
@@ -145,11 +116,11 @@ export default class Initialization {
 
         this.addingFigureToValue(
           figure.value.id,
-          "yewllow knight",
+          "yellow knight",
           this.figures
         );
-        item.value.initialFigure = "yewllow knight";
-        item.value.figure = "yewllow knight";
+        item.value.initialFigure = "yellow knight";
+        item.value.figure = "yellow knight";
       });
     }
     return true;
@@ -167,7 +138,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/castle2.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "castle";
@@ -192,7 +162,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/castle.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "castle";
@@ -234,7 +203,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/pawn2.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "pawn";
@@ -269,7 +237,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/pawn.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "pawn";
@@ -298,7 +265,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/bishop2.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "bishop";
@@ -323,7 +289,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/bishop.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "bishop";
@@ -355,7 +320,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/queen2.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "queen";
@@ -380,7 +344,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/queen.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "queen";
@@ -408,7 +371,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/king2.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "king";
@@ -433,7 +395,6 @@ export default class Initialization {
         figure.classList.add("figure");
         figure.src = "/img/king.png";
         figure.value = this.setts.figuresValue[item.name];
-        figure.setAttribute("draggable", true);
 
         figure.value.color = color;
         figure.value.initialFigure = "king";
@@ -448,11 +409,19 @@ export default class Initialization {
       });
     }
   }
-  cancelSelections(squareArr) {
-    squareArr.forEach((item) => (item.value.selected = false));
+  cancelSelections() {
+    this.squares.forEach((item) => {
+      item.value.selected = false;
+      if (item.firstChild) {
+        item.firstChild.ondragstart = null;
+        item.firstChild.ondragend = null;
+      }
+    });
+
+    this.figures.forEach((item) => item.classList.remove("square_grey"));
   }
 
   posibleMoves(value) {
-    console.log(value);
+    console.log("posible moves");
   }
 }

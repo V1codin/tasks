@@ -1,36 +1,99 @@
+import calc from "./calculationMoves";
+
 class Rules {
-  constructor({ squares, figures, selectedFigure, columns }) {
+  constructor({
+    squares,
+    figures,
+    selectedFigure,
+    columns,
+    posibleMoves,
+    cancelSelections,
+  }) {
     this.props = {
       squares,
       figures,
       selectedFigure,
       columns,
+      posibleMoves,
+      cancelSelections,
     };
 
     this.valid = null;
     this.figureToAppent = null;
     this.initialSquare = null;
+    this.calculation = calc;
 
-    // this.posibleMoves = [];
+    this.availableSquares = [];
+
     this.initRules();
   }
 
   initRules() {
+    this.props.squares.forEach((item) => {
+      this.selecting(item);
+    });
+
+    /*
+
+    previous method
+
     this.props.figures.forEach((el) => {
       el.ondragstart = this.dragStart.bind(this);
       el.ondragend = this.dragEnd.bind(this);
     });
-  }
-  calculatePosibleMoves(element) {
-    console.log("element: ", element);
-
-    return [];
-
-    /*
-    const res = null;
-
-    this.posibleMoves.push(res);
     */
+  }
+
+  selecting(element) {
+    element.onclick = (e) => {
+      if (e.target.className.includes("square")) {
+        this.props.selectedFigure = e.target;
+
+        const figure = this.props.selectedFigure.firstChild;
+
+        this.props.squares.forEach((item) => {
+          item.value.selected = false;
+
+          item.classList.add("square_grey");
+
+          item.classList.remove("square_border");
+        });
+
+        if (figure != null) {
+          this.availableSquares = this.calculation(figure);
+          console.log("availableSquares: ", this.availableSquares);
+
+          for (let item of this.availableSquares) {
+            this.props.squares.forEach((el) => {
+              if (el.value.id === item) {
+                el.classList.remove("square_grey");
+              }
+            });
+          }
+
+          figure.setAttribute("draggable", true);
+
+          figure.ondragstart = this.dragStart.bind(this);
+          figure.ondragend = this.dragEnd.bind(this);
+        }
+
+        e.target.classList.add("square_border");
+        e.target.value.selected = true;
+        e.target.classList.remove("square_grey");
+
+        // move function
+      } else if (e.target.className === "figure") {
+        const figureValue = e.target.value;
+        console.log("figureValue: ", figureValue);
+
+        /*
+          console.dir(e.target);
+          console.log("parent value", e.target.parentElement.value);
+          */
+
+        this.props.posibleMoves(figureValue);
+      }
+    };
   }
 
   moveValidation(figureElement) {
@@ -38,15 +101,18 @@ class Rules {
     this.initialSquare = figureElement.parentElement;
     // console.dir(figureElement.parentElement.value.position);
 
-    let posibleMoves = this.calculatePosibleMoves(figureElement).length
-      ? this.calculatePosibleMoves(figureElement)
-      : ["E3", "E4"];
-
     const nodePosibles = this.props.squares.filter((item) =>
-      posibleMoves.includes(item.value.position) ? item : null
+      this.availableSquares.includes(item.value.position) ? item : null
     );
 
-    if (posibleMoves && checker) {
+    if (this.availableSquares.length && checker) {
+      this.props.squares.forEach((item) => {
+        item.ondragenter = null;
+        item.ondragleave = null;
+        item.ondragover = null;
+        item.ondrop = null;
+      });
+
       nodePosibles.forEach((el) => {
         el.ondragenter = this.dragEnterSquares;
         el.ondragleave = this.dragLeaveSquares;
@@ -58,7 +124,6 @@ class Rules {
 
       return {
         nodePosibles,
-        posibleMoves,
         checker,
       };
     } else {
@@ -82,11 +147,12 @@ class Rules {
       e.target.classList.remove("hidden");
       this.initialSquare.value.selected = false;
     } else {
-      console.log("back to initial state");
+      //   console.log("back to initial state");
       e.target.classList.remove("hidden");
       e.target.classList.remove("square_grey");
     }
   }
+
   dragOverSquares(e) {
     e.preventDefault();
   }
@@ -97,16 +163,35 @@ class Rules {
   }
   dragLeaveSquares(e) {
     e.target.classList.remove("square_borderIn");
-    e.target.classList.add("square_grey");
+    // e.target.classList.add("square_grey");
   }
+
   dropSquares(e) {
-    e.target.classList.remove("square_borderIn");
+    this.props.squares.forEach((item) =>
+      item.classList.remove("square_borderIn")
+    );
+
     this.figureToAppent.classList.remove("square_grey");
-    e.target.append(this.figureToAppent);
+
+    if (e.target.className === "square") {
+      e.target.append(this.figureToAppent);
+    } else {
+      console.log("not square");
+
+      e.target.append(this.figureToAppent);
+
+      // e.target.parentElement.insertBefore(this.figureToAppent, e.target);
+
+      console.dir(e.target.parentElement);
+    }
 
     this.figureToAppent.value.position = e.target.value.position;
     this.figureToAppent.onclick = (e) => console.log(e.target.value);
     this.figureToAppent = null;
+
+    setTimeout(() => {
+      this.props.cancelSelections();
+    }, 500);
   }
 }
 
