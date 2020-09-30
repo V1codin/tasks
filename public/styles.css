@@ -18,9 +18,8 @@ body {
   justify-content: center;
   align-items: center;
   margin: 10px auto;
-  padding: 15px;
   width: var(--width);
-  height: var(--height);
+  height: calc(var(--height) - 110px);
   border: 3px solid #fff;
   background-color: #8a8a8a;
 }
@@ -54,14 +53,17 @@ body {
 .table {
   display: flex;
   margin: 10px auto;
-  width: 850px;
-  height: 850px;
+
+  width: calc(var(--width) - 200px);
+  height: calc(var(--height) - 200px);
+
   border: 5px solid #8a0000;
 }
 .row {
   display: flex;
 }
 .square {
+  overflow: hidden;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -70,7 +72,26 @@ body {
   height: 105px;
 }
 .figure {
+  width: 55px;
+  height: 95px;
   margin: 0 auto;
+  cursor: all-scroll;
+}
+.hidden {
+  display: none;
+}
+.display {
+  display: block;
+}
+.square_grey {
+  background-color: #808080;
+  opacity: 0.3;
+}
+.square_border {
+  border: 2px solid #ff0000;
+}
+.square_borderIn {
+  border: 3px solid #00ff00;
 }
 
 div[data-even="even"] > .square:nth-child(even) {
