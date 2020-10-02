@@ -13,7 +13,8 @@ import {
   yellowQueen,
 } from "./moves";
 
-export default function (element) {
+export default function (element, squaresArr = []) {
+  const squares = [...squaresArr];
   let movesArr = [];
 
   switch (element.value.figure) {
@@ -30,10 +31,10 @@ export default function (element) {
       return yellowKing(element);
 
     case "blue castle":
-      return blueCastle(element);
+      return blueCastle(element, squares);
 
     case "yellow castle":
-      return yellowCastle(element);
+      return yellowCastle(element, squares);
 
     case "blue knight":
       return blueKnight(element);

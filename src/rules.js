@@ -32,22 +32,14 @@ class Rules {
     this.props.squares.forEach((item) => {
       this.selecting(item);
     });
-
-    /*
-
-    previous method
-
-    this.props.figures.forEach((el) => {
-      el.ondragstart = this.dragStart.bind(this);
-      el.ondragend = this.dragEnd.bind(this);
-    });
-    */
   }
 
   selecting(element) {
     element.onclick = (e) => {
       if (e.target.className.includes("square")) {
         this.props.selectedFigure = e.target;
+
+        console.log("selected", this.props.selectedFigure.value);
 
         const figure = this.props.selectedFigure.firstChild;
 
@@ -60,8 +52,8 @@ class Rules {
         });
 
         if (figure != null) {
-          this.availableSquares = this.calculation(figure);
-          console.log("availableSquares: ", this.availableSquares);
+          this.availableSquares = this.calculation(figure, this.props.squares);
+          // console.log("availableSquares: ", this.availableSquares);
 
           for (let item of this.availableSquares) {
             this.props.squares.forEach((el) => {
@@ -82,16 +74,20 @@ class Rules {
         e.target.classList.remove("square_grey");
 
         // move function
-      } else if (e.target.className === "figure") {
+      } else if (e.target.className.includes("figure")) {
         const figureValue = e.target.value;
         console.log("figureValue: ", figureValue);
+        // console.log("figureValue: ", figureValue);
 
         /*
           console.dir(e.target);
           console.log("parent value", e.target.parentElement.value);
           */
+        let moves = [
+          ...new Set(this.calculation(e.target, this.props.squares)),
+        ];
 
-        this.props.posibleMoves(figureValue);
+        this.props.posibleMoves(moves);
       }
     };
   }
@@ -167,6 +163,8 @@ class Rules {
   }
 
   dropSquares(e) {
+    this.props.selectedFigure.value.figure = "";
+
     this.props.squares.forEach((item) =>
       item.classList.remove("square_borderIn")
     );
@@ -175,6 +173,8 @@ class Rules {
 
     if (e.target.className === "square") {
       e.target.append(this.figureToAppent);
+
+      e.target.value.figure = this.figureToAppent.value.figure;
     } else {
       console.log("not square");
 
@@ -182,11 +182,11 @@ class Rules {
 
       // e.target.parentElement.insertBefore(this.figureToAppent, e.target);
 
-      console.dir(e.target.parentElement);
+      // console.dir(e.target.parentElement);
     }
 
     this.figureToAppent.value.position = e.target.value.position;
-    this.figureToAppent.onclick = (e) => console.log(e.target.value);
+    // this.figureToAppent.onclick = (e) => console.log(e.target.value);
     this.figureToAppent = null;
 
     setTimeout(() => {

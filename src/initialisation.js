@@ -419,6 +419,6 @@ export default class Initialization {
   }
 
   posibleMoves(value) {
-    console.log("posible moves");
+    console.log("posible moves", value);
   }
 }

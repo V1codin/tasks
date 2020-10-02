@@ -128,8 +128,10 @@ export function yellowKing(element) {
   return movesArr;
 }
 
-export function blueCastle(element) {
+export function blueCastle(element, squaresArr) {
   let movesArr = [];
+  let squares = [...squaresArr];
+
   const str = "ABCDEFGH";
 
   let number;
@@ -146,20 +148,96 @@ export function blueCastle(element) {
   prev = str[charIndex - 1];
   next = str[charIndex + 1];
 
-  for (let i = 1; i <= 8; i++) {
-    if (i === parseInt(number)) {
-      for (let q = 0; q < str.length; q++) {
-        movesArr.push(str[q] + number);
-      }
-    } else {
+  for (let i = parseInt(number) + 1; i <= 8; i++) {
+    let pos = char + i;
+    let temp = squares.find((el) => el.value.position === pos);
+
+    if (
+      temp.firstChild &&
+      temp.firstChild.value.color !== element.value.color
+    ) {
       movesArr.push(char + i);
+      break;
+    } else if (
+      temp.firstChild &&
+      temp.firstChild.value.color === element.value.color
+    ) {
+      break;
     }
+
+    movesArr.push(char + i);
   }
+
+  for (let q = charIndex + 1; q < str.length; q++) {
+    let pos = str[q] + number;
+    let temp = squares.find((el) => el.value.position === pos);
+
+    if (
+      temp.firstChild &&
+      temp.firstChild.value.color !== element.value.color
+    ) {
+      movesArr.push(pos);
+      break;
+    } else if (
+      temp.firstChild &&
+      temp.firstChild.value.color === element.value.color
+    ) {
+      break;
+    }
+
+    movesArr.push(str[q] + number);
+  }
+
+  for (let q = charIndex - 1; q >= 0; q--) {
+    let pos = str[q] + number;
+    let temp = squares.find((el) => el.value.position === pos);
+
+    if (
+      temp.firstChild &&
+      temp.firstChild.value.color !== element.value.color
+    ) {
+      movesArr.push(pos);
+      break;
+    } else if (
+      temp.firstChild &&
+      temp.firstChild.value.color === element.value.color
+    ) {
+      break;
+    }
+
+    movesArr.push(pos);
+  }
+
+  for (let i = parseInt(number) - 1; i >= 1; i--) {
+    let pos = char + i;
+    let temp = squares.find((el) => el.value.position === pos);
+
+    if (
+      temp.firstChild &&
+      temp.firstChild.value.color !== element.value.color
+    ) {
+      movesArr.push(pos);
+      break;
+    } else if (
+      temp.firstChild &&
+      temp.firstChild.value.color === element.value.color
+    ) {
+      break;
+    }
+
+    movesArr.push(pos);
+  }
+
   return movesArr;
 }
 
-export function yellowCastle(element) {
+export function yellowCastle(element, squaresArr) {
+  let squares = [...squaresArr];
+  return blueCastle(element, squares);
+  /*
   let movesArr = [];
+  let squares = [...squaresArr];
+
   const str = "ABCDEFGH";
 
   let number;
@@ -176,16 +254,55 @@ export function yellowCastle(element) {
   prev = str[charIndex - 1];
   next = str[charIndex + 1];
 
-  for (let i = 8; i >= 1; i--) {
-    if (i === parseInt(number)) {
-      for (let q = 0; q < str.length; q++) {
-        movesArr.push(str[q] + number);
-      }
-    } else {
+  for (let i = parseInt(number) + 1; i <= 8; i++) {
+    let pos = char + i;
+    let temp = squares.find((el) => el.value.position === pos);
+    if (temp.firstChild) {
       movesArr.push(char + i);
+      break;
     }
+    movesArr.push(char + i);
   }
+
+  for (let q = charIndex + 1; q < str.length; q++) {
+    let pos = str[q] + number;
+    let temp = squares.find((el) => el.value.position === pos);
+
+    if (temp.firstChild) {
+      movesArr.push(pos);
+      break;
+    }
+
+    movesArr.push(pos);
+    movesArr.push(str[q] + number);
+  }
+
+  for (let q = charIndex - 1; q >= 0; q--) {
+    let pos = str[q] + number;
+    let temp = squares.find((el) => el.value.position === pos);
+
+    if (temp.firstChild) {
+      movesArr.push(pos);
+      break;
+    }
+
+    movesArr.push(pos);
+    movesArr.push(str[q] + number);
+  }
+
+  for (let i = parseInt(number) - 1; i >= 1; i--) {
+    let pos = char + i;
+    let temp = squares.find((el) => el.value.position === pos);
+    if (temp.firstChild) {
+      movesArr.push(pos);
+      break;
+    }
+    movesArr.push(pos);
+  }
+
   return movesArr;
+
+  */
 }
 export function blueKnight(element) {
   let movesArr = [];
