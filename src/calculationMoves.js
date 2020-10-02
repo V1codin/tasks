@@ -9,6 +9,8 @@ import {
   yellowKnight,
   blueBishop,
   yellowBishop,
+  blueQueen,
+  yellowQueen,
 } from "./moves";
 
 export default function (element) {
@@ -44,6 +46,12 @@ export default function (element) {
 
     case "yellow bishop":
       return yellowBishop(element);
+
+    case "blue queen":
+      return blueQueen(element);
+
+    case "yellow queen":
+      return yellowQueen(element);
 
     default:
       movesArr.length = 0;

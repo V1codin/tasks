@@ -383,3 +383,19 @@ export function yellowBishop(element) {
 
   return movesArr;
 }
+
+export function blueQueen(element) {
+  const pos = element.value.position;
+  let temp = [...blueCastle(element), ...blueBishop(element)];
+  const movesArr = temp.filter((item) => item !== pos);
+
+  return movesArr;
+}
+
+export function yellowQueen(element) {
+  const pos = element.value.position;
+  let temp = [...yellowCastle(element), ...yellowBishop(element)];
+  const movesArr = temp.filter((item) => item !== pos);
+
+  return movesArr;
+}
