@@ -8,6 +8,7 @@ class Rules {
     columns,
     posibleMoves,
     cancelSelections,
+    squaresObject,
   }) {
     this.props = {
       squares,
@@ -16,6 +17,7 @@ class Rules {
       columns,
       posibleMoves,
       cancelSelections,
+      squaresObject,
     };
 
     this.valid = null;
@@ -38,9 +40,6 @@ class Rules {
     element.onclick = (e) => {
       if (e.target.className.includes("square")) {
         this.props.selectedFigure = e.target;
-
-        console.log("selected", this.props.selectedFigure.value);
-
         const figure = this.props.selectedFigure.firstChild;
 
         this.props.squares.forEach((item) => {
@@ -51,9 +50,15 @@ class Rules {
           item.classList.remove("square_border");
         });
 
-        if (figure != null) {
-          this.availableSquares = this.calculation(figure, this.props.squares);
-          // console.log("availableSquares: ", this.availableSquares);
+        if (figure !== null) {
+          // this.availableSquares = this.calculation(figure, this.props.squares);
+          let moves = [
+            ...new Set(this.calculation(figure, this.props.squaresObject)),
+          ];
+
+          console.log(`moves for: ${figure.value.figure}`, moves);
+
+          this.availableSquares = moves;
 
           for (let item of this.availableSquares) {
             this.props.squares.forEach((el) => {
@@ -74,20 +79,8 @@ class Rules {
         e.target.classList.remove("square_grey");
 
         // move function
-      } else if (e.target.className.includes("figure")) {
-        const figureValue = e.target.value;
-        console.log("figureValue: ", figureValue);
-        // console.log("figureValue: ", figureValue);
-
-        /*
-          console.dir(e.target);
-          console.log("parent value", e.target.parentElement.value);
-          */
-        let moves = [
-          ...new Set(this.calculation(e.target, this.props.squares)),
-        ];
-
-        this.props.posibleMoves(moves);
+      } else {
+        return false;
       }
     };
   }

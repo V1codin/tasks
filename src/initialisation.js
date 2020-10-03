@@ -7,6 +7,8 @@ export default class Initialization {
     this.figures = [];
     this.columns = document.querySelectorAll(".column");
 
+    this.squaresObject = {};
+
     document.querySelector(".table").onmouseleave = () => {
       this.selectedFigure = null;
       this.cancelSelections();
@@ -27,9 +29,15 @@ export default class Initialization {
     this.columns.forEach((el) => {
       const square = el.querySelectorAll(".square");
 
+      /*
       for (let i = 0; i < square.length; i++) {
+        // this.squaresObject[square[i].value.position] = square[i];
+
+        console.log(square[i].value);
+
         this.squares.push(square[i]);
       }
+      */
 
       square.forEach((item, index) => {
         let data =
@@ -38,11 +46,18 @@ export default class Initialization {
         item.name = data;
         item.value = this.setts.staticValues[data];
       });
+
+      for (let i = 0; i < square.length; i++) {
+        this.squaresObject[square[i].value.position] = square[i];
+
+        this.squares.push(square[i]);
+      }
     });
   }
 
   placeFigures() {
     this.placePawnsToTable("blue");
+
     this.placePawnsToTable("yellow");
 
     this.placeCastlesToTable("blue");
@@ -416,9 +431,5 @@ export default class Initialization {
     });
 
     this.figures.forEach((item) => item.classList.remove("square_grey"));
-  }
-
-  posibleMoves(value) {
-    console.log("posible moves", value);
   }
 }
