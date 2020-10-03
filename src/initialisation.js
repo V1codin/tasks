@@ -57,7 +57,6 @@ export default class Initialization {
 
   placeFigures() {
     this.placePawnsToTable("blue");
-
     this.placePawnsToTable("yellow");
 
     this.placeCastlesToTable("blue");

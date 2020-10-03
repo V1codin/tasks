@@ -147,8 +147,10 @@ class Rules {
   }
 
   dragEnterSquares(e) {
-    e.target.classList.add("square_borderIn");
-    e.target.classList.remove("square_grey");
+    if (!e.target.className.includes("figure")) {
+      e.target.classList.add("square_borderIn");
+      e.target.classList.remove("square_grey");
+    }
   }
   dragLeaveSquares(e) {
     e.target.classList.remove("square_borderIn");
@@ -165,17 +167,13 @@ class Rules {
     this.figureToAppent.classList.remove("square_grey");
 
     if (e.target.className === "square") {
+      e.target.innerHTML = "";
+
       e.target.append(this.figureToAppent);
 
       e.target.value.figure = this.figureToAppent.value.figure;
     } else {
-      console.log("not square");
-
-      e.target.append(this.figureToAppent);
-
-      // e.target.parentElement.insertBefore(this.figureToAppent, e.target);
-
-      // console.dir(e.target.parentElement);
+      return false;
     }
 
     this.figureToAppent.value.position = e.target.value.position;
