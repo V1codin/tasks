@@ -9,7 +9,11 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/babel__core": "^7.1.10",
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3"
+  },
   "scripts": {
     "build:prod": "webpack --mode production",
     "build:watch": "webpack --watch --mode production",
