@@ -1,7 +1,7 @@
 ## Hello My name is Kirill and it's my template of form validation.
 
 --The fields as user's first name, last name, username, email validates by regular expressions and are required otherwise renders notification;<br>
---The field "About you" if free to fill;<br>
+--The field "About you" is free to fill;<br>
 --Validation processes withing typing and by button click also;<br>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
