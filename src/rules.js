@@ -88,7 +88,6 @@ class Rules {
   moveValidation(figureElement) {
     const checker = figureElement.parentElement.value.selected;
     this.initialSquare = figureElement.parentElement;
-    // console.dir(figureElement.parentElement.value.position);
 
     const nodePosibles = this.props.squares.filter((item) =>
       this.availableSquares.includes(item.value.position) ? item : null

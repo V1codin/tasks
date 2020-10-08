@@ -29,16 +29,6 @@ export default class Initialization {
     this.columns.forEach((el) => {
       const square = el.querySelectorAll(".square");
 
-      /*
-      for (let i = 0; i < square.length; i++) {
-        // this.squaresObject[square[i].value.position] = square[i];
-
-        console.log(square[i].value);
-
-        this.squares.push(square[i]);
-      }
-      */
-
       square.forEach((item, index) => {
         let data =
           item.parentElement.dataset.columnletter + this.setts.nums[index];
