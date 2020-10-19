@@ -1,9 +1,0 @@
-.__article {
-  margin-top: 5px;
-  color: #bf1650;
-}
-
-.__article::before {
-  display: inline;
-  content: "⚠ ";
-}
