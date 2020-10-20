@@ -37,20 +37,42 @@ function App() {
 
   return (
     <div className={style.app}>
-      {popList.results.map((item) => {
+      {popList.results.map((item, index) => {
+        const rating = item.vote_average;
+
         const squares = Array.from(
-          {
-            length: Math.round(item.vote_average),
-          },
-          () => {
-            if (item.vote_average >= 6) {
-              return "rated";
-            } else if (item.vote_average < 6 && item.vote_average >= 4) {
-              return "rated_yellow";
-            } else if (item.vote_average < 4) {
-              return "rated_red";
+          { length: Math.round(rating) },
+          (_, index) => {
+            let fillIndex =
+              parseFloat((rating - index).toFixed(2)) >= 1
+                ? 1
+                : parseFloat((rating - index).toFixed(2));
+
+            if (rating >= 6) {
+              return {
+                backgroundImage: `linear-gradient(to right, #76db5d ${
+                  fillIndex * 100
+                }%, #fff)`,
+              };
+            } else if (rating < 6 && rating >= 4) {
+              return {
+                backgroundImage: `linear-gradient(to right, #cbce34 ${
+                  fillIndex * 100
+                }%, #fff)`,
+              };
+            } else if (rating < 4) {
+              return {
+                backgroundImage: `linear-gradient(to right, #c01111 ${
+                  fillIndex * 100
+                }%, #fff)`,
+              };
             }
-            return "";
+
+            return {
+              backgroundImage: `linear-gradient(to right, #fff ${
+                fillIndex * 100
+              }%, #fff)`,
+            };
           }
         );
 
@@ -68,37 +90,16 @@ function App() {
               <section>{item.overview}</section>
               <div className={style.movieCard__rate}>
                 <p>Rating: {item.vote_average}</p>
-                <div
-                  className={style.rate__block + " " + style[squares[0]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[1]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[2]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[3]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[4]]}
-                ></div>
-
-                <div
-                  className={style.rate__block + " " + style[squares[5]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[6]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[7]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[8]]}
-                ></div>
-                <div
-                  className={style.rate__block + " " + style[squares[9]]}
-                ></div>
+                <div style={squares[0]} className={style.rate__block}></div>
+                <div style={squares[1]} className={style.rate__block}></div>
+                <div style={squares[2]} className={style.rate__block}></div>
+                <div style={squares[3]} className={style.rate__block}></div>
+                <div style={squares[4]} className={style.rate__block}></div>
+                <div style={squares[5]} className={style.rate__block}></div>
+                <div style={squares[6]} className={style.rate__block}></div>
+                <div style={squares[7]} className={style.rate__block}></div>
+                <div style={squares[8]} className={style.rate__block}></div>
+                <div style={squares[9]} className={style.rate__block}></div>
               </div>
             </div>
           </div>
