@@ -1,0 +1,34 @@
+.header {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  height: 55px;
+  background-color: #012383;
+}
+.header__wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.header__list {
+  display: flex;
+  border: 2px solid red;
+  margin: 0 auto;
+  color: #ffffff;
+}
+.nav__link_active {
+  background-color: #00bbbb;
+}
+.nav__link {
+  display: block;
+  padding: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  width: 135px;
+  text-align: center;
+  font-weight: bold;
+}
+.nav__link:hover {
+  background-color: #00ffff;
+}

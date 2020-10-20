@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
-import style from "./styles.module.css";
-import Warning from "../modules/warning/index";
-import Out from "../modules/out/index";
+import Router from "../Static/Router";
+import Header from "../Static/Header";
+// import style from "./styles.module.css";
 
 function App() {
-  return <div></div>;
+  return (
+    <>
+      <Header />
+      <main>
+        <Router />
+      </main>
+    </>
+  );
 }
-
 export default App;
