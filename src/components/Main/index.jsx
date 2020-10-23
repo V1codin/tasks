@@ -41,7 +41,7 @@ function App() {
         const rating = item.vote_average;
 
         const squares = Array.from(
-          { length: Math.round(rating) },
+          { length: Math.ceil(rating) },
           (_, index) => {
             let fillIndex =
               parseFloat((rating - index).toFixed(2)) >= 1
