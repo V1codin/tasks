@@ -12,44 +12,49 @@
   overflow: hidden;
   max-width: 410px;
   padding: 5px;
-  height: 338px;
+  height: 370px;
   margin: 15px 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 img {
   border-radius: 15px;
 }
 h2 {
-  padding: 5px;
-  font-size: 1.2em;
-  margin: 5px auto 0 15px;
+  font-size: 1rem;
   color: #ffffff;
 }
 p {
   font-size: 1rem;
+  padding: 5px;
   font-weight: bold;
-  padding: 6px;
   color: aqua;
 }
 section {
-  margin-top: 30px;
+  margin: 10px auto;
+  padding: 15px;
   color: #ffffff;
 }
 
 .movieCard__info {
+  border-radius: 25px;
+  overflow: auto;
+  background-color: #525252;
+  transition: transform 0.4s ease-in-out;
   position: absolute;
   top: 0;
-  left: 0;
+  left: -10px;
   bottom: 0;
   right: 0;
   transform: translateY(103%);
-  padding: 5px;
+  margin: 0 auto;
+  padding: 10px;
   text-align: center;
   width: 215px;
   margin: 5px auto;
 }
+.movieCard:hover .movieCard__info {
+  transform: translateY(-5%);
+}
+
 .movieCard:hover {
   cursor: pointer;
   padding: 3px;
@@ -72,4 +77,10 @@ section {
   border: 1px solid #808080;
   background-color: #fff;
   height: 10px;
+}
+
+.movieCard__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

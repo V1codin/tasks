@@ -76,11 +76,12 @@ function App() {
 
         return (
           <div className={style.movieCard} key={item.id}>
-            <div className={style.movieCard__imgWrapper}>
+            <div className={style.movieCard__content}>
               <img
                 src={`${req.image_url}${item.poster_path}`}
                 alt={item.title}
               ></img>
+              <h2>{item.title}</h2>
               <div className={style.movieCard__rate}>
                 <p>{item.vote_average}</p>
                 <div style={squares[0]} className={style.rate__block}></div>
@@ -96,7 +97,6 @@ function App() {
               </div>
             </div>
             <div className={style.movieCard__info}>
-              <h2>{item.title}</h2>
               <p>{item.release_date}</p>
               <section>{item.overview}</section>
             </div>
