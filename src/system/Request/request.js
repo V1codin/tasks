@@ -3,7 +3,7 @@ export default class Req {
     this.api_key = setts.API_KEY;
     // this.base_url = setts.URL;
     this.base_url = "https://api.themoviedb.org/4/";
-    this.image_url = "https://image.tmdb.org/t/p/";
+    this.image_url = "https://image.tmdb.org/t/p/w185";
     this.request_token = setts.REQUEST_TOKEN;
 
     this.config_url = setts.CONFIG_URL;

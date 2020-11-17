@@ -4,8 +4,6 @@ import Request from "../../system/Request/request";
 import apiSetts from "../../system/Setts/Api.json";
 import style from "./styles.module.css";
 
-// eslint-disable-next-line
-import template from "../../js.js";
 const req = new Request(apiSetts);
 
 function App() {
@@ -80,16 +78,11 @@ function App() {
           <div className={style.movieCard} key={item.id}>
             <div className={style.movieCard__imgWrapper}>
               <img
-                src={`${req.image_url}w185${item.poster_path}`}
+                src={`${req.image_url}${item.poster_path}`}
                 alt={item.title}
               ></img>
-            </div>
-            <div className={style.movieCard__info}>
-              <h2>{item.title}</h2>
-              <p>{item.release_date}</p>
-              <section>{item.overview}</section>
               <div className={style.movieCard__rate}>
-                <p>Rating: {item.vote_average}</p>
+                <p>{item.vote_average}</p>
                 <div style={squares[0]} className={style.rate__block}></div>
                 <div style={squares[1]} className={style.rate__block}></div>
                 <div style={squares[2]} className={style.rate__block}></div>
@@ -102,6 +95,11 @@ function App() {
                 <div style={squares[9]} className={style.rate__block}></div>
               </div>
             </div>
+            <div className={style.movieCard__info}>
+              <h2>{item.title}</h2>
+              <p>{item.release_date}</p>
+              <section>{item.overview}</section>
+            </div>
           </div>
         );
       })}
@@ -110,7 +108,9 @@ function App() {
 }
 export default App;
 
+/*
 const config = fetch(
   "https://api.themoviedb.org/3/configuration?api_key=b52392c01367247b75d6e6d0d642001a"
 );
 config.then((r) => r.json()).then((q) => console.log(q));
+*/
