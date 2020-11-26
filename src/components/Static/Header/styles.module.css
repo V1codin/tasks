@@ -1,9 +1,12 @@
 .header {
+  border-radius: 6px;
+  max-width: 1200px;
+  box-shadow: 2px 6px 5px 3px;
   display: flex;
   align-items: center;
   margin: 0 auto;
   height: 55px;
-  background-color: #012383;
+  background-color: #0d1b41;
 }
 .header__wrapper {
   display: flex;
