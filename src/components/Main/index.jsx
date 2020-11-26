@@ -1,41 +1,66 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
 import Request from "../../system/Request/request";
 import apiSetts from "../../system/Setts/Api.json";
 import style from "./styles.module.css";
 
+/*
+const config = fetch(
+  "https://api.themoviedb.org/3/configuration?api_key=b52392c01367247b75d6e6d0d642001a"
+);
+*/
+
 const req = new Request(apiSetts);
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    moviesAction: (moviesRespons) => {
+      return dispatch({
+        type: "GET_MOVIES_BY_POPULARITY",
+        movies: moviesRespons,
+      });
+    },
+  };
+};
 
-function App() {
-  const [popList, setPopList] = useState({
-    results: [],
-  });
+function App(props) {
+  const { movies, moviesAction } = props;
 
-  /*
   const onScroll = () => {
     const scrolled = window.pageYOffset;
     const innerHeight = window.innerHeight;
     const resScrolled = (innerHeight + scrolled) * 1.15;
+    console.log("resScrolled: ", resScrolled);
 
     const scrollHeight = document.documentElement.scrollHeight;
 
     if (resScrolled >= scrollHeight) {
       console.log("FETCH ANOTHER PAGE");
-      const list = req.getListByPopularity(++popList.page, setPopList);
+      const list = req.getListByPopularity(movies.page, moviesAction);
       list();
       window.onscroll = null;
     }
   };
-  */
 
   useEffect(() => {
-    const list = req.getListByPopularity(1, setPopList);
+    const list = req.getListByPopularity(movies.page, moviesAction);
     list();
+    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    window.onscroll = onScroll;
+    // eslint-disable-next-line
+  }, [movies.results]);
 
   return (
     <div className={style.app}>
-      {popList.results.map((item, index) => {
+      {movies.results.map((item, index) => {
         const rating = item.vote_average;
 
         const squares = Array.from(
@@ -108,11 +133,4 @@ function App() {
     </div>
   );
 }
-export default App;
-
-/*
-const config = fetch(
-  "https://api.themoviedb.org/3/configuration?api_key=b52392c01367247b75d6e6d0d642001a"
-);
-config.then((r) => r.json()).then((q) => console.log(q));
-*/
+export default connect(mapStateToProps, mapDispatchToProps)(App);

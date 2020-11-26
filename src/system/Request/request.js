@@ -29,10 +29,7 @@ export default class Req {
           }
         );
         const data = await res.json();
-        console.log("data: ", data);
-        stateFn({
-          ...data,
-        });
+        stateFn(data.results);
       } catch (e) {
         console.log(e);
       }
