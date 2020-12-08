@@ -1,4 +1,5 @@
-export default class Req {
+import apiSetts from "../../system/Setts/Api.json";
+class Req {
   constructor(setts) {
     this.api_key = setts.API_KEY;
     // this.base_url = setts.URL;
@@ -13,10 +14,29 @@ export default class Req {
 
     // this.clearUrl();
   }
+  /*
   send() {
     return fetch(this.builded_url);
   }
-  getListByPopularity(page, stateFn) {
+  */
+
+  getListFromSearch(value, stateFn, page = 1) {
+    return async () => {
+      const url = `${this.search_url}${this.api_key}&page=${page}&language=ru&query=${value}`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.results.length > 0) {
+          stateFn(data.results, value);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  }
+  getListByPopularity(stateFn, page) {
     return async () => {
       try {
         const res = await fetch(
@@ -29,13 +49,39 @@ export default class Req {
           }
         );
         const data = await res.json();
-        stateFn(data.results);
+
+        if (data.results.length > 0) {
+          stateFn(data.results);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  }
+  getListByRating(stateFn, page) {
+    return async () => {
+      try {
+        const res = await fetch(
+          `${this.base_url}discover/movie?&vote_average.gte=7&page=${page}&language=ru`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.request_token}`,
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        );
+        const data = await res.json();
+
+        if (data.results.length > 0) {
+          stateFn(data.results);
+        }
       } catch (e) {
         console.log(e);
       }
     };
   }
 }
+export default new Req(apiSetts);
 /*
 class First {
   constructor(setts) {

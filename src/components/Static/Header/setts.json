@@ -8,5 +8,10 @@
     "name": "Popular",
     "href": "/popular",
     "id": "2"
+  },
+  {
+    "name": "Rating",
+    "href": "/rating",
+    "id": "3"
   }
 ]

@@ -1,4 +1,4 @@
 import { combineReducers } from "redux";
-import movies from "../../components/Main/setts/reducer";
+import movies from "../../components/Popularity/setts/reducer";
 
 export default combineReducers({ movies });

@@ -5,20 +5,44 @@
   display: flex;
   align-items: center;
   margin: 0 auto;
-  height: 55px;
+  min-height: 55px;
   background-color: #0d1b41;
 }
-.header__wrapper {
+nav {
+  width: 100%;
   display: flex;
-  justify-content: center;
-  margin: 0 auto;
+  justify-content: space-around;
+  align-items: center;
+}
+.header__wrapper {
+  width: 100%;
+  margin: 10px auto;
   max-width: 1200px;
 }
 .header__list {
   display: flex;
   border: 2px solid red;
-  margin: 0 auto;
+  margin: auto;
   color: #ffffff;
+}
+.header__search {
+  margin: 0 35px 0 auto;
+}
+.search {
+  width: 200px;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9em;
+  color: #ffffff;
+  background-color: #183481;
+  border-radius: 25px;
+  outline: none;
+}
+.search:focus {
+  border: 2px solid #4e7dff;
+}
+
+.search::placeholder {
+  color: #c0c0c0;
 }
 .nav__link_active {
   background-color: #00bbbb;

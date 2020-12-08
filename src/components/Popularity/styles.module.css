@@ -7,6 +7,9 @@
   justify-content: center;
   align-items: flex-start;
 }
+.firstLetter {
+  color: red;
+}
 .movieCard {
   position: relative;
   overflow: hidden;
@@ -15,6 +18,7 @@
   min-height: 370px;
   max-height: 395px;
   margin: 15px 15px 0 0;
+  word-break: break-word;
 }
 img {
   border-radius: 15px;

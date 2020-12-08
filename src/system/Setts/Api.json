@@ -2,6 +2,6 @@
   "API_KEY": "b52392c01367247b75d6e6d0d642001a",
   "URL": "https://api.themoviedb.org/3/",
   "CONFIG_URL": "https://api.themoviedb.org/3/configuration",
-  "SEARCH_URL": "https://api.themoviedb.org/3/search",
+  "SEARCH_URL": "https://api.themoviedb.org/3/search/movie?&api_key=",
   "REQUEST_TOKEN": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNTIzOTJjMDEzNjcyNDdiNzVkNmU2ZDBkNjQyMDAxYSIsInN1YiI6IjVmOGQ1ODk0MTdjNDQzMDAzOGRiNDIwZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kKwQwHDfGT8VZ5TLuoOsYnPTQzjQYZApmzYl7-SuZmU"
 }

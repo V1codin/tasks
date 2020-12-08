@@ -1,111 +1,92 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import Request from "../../system/Request/request";
-import apiSetts from "../../system/Setts/Api.json";
+import req from "../../system/Request/request";
 import style from "./styles.module.css";
+import thumbnail from "../../system/img/loading_thumbnail.png";
+import scrollCalculate from "../../system/Setts/scrollCalc";
+import ratingCircles from "../../system/Setts/ratingCalc";
+import requestAtions from "../../system/Setts/requestActions/actions";
 
-/*
-const config = fetch(
-  "https://api.themoviedb.org/3/configuration?api_key=b52392c01367247b75d6e6d0d642001a"
-);
-*/
-
-const req = new Request(apiSetts);
 const mapStateToProps = (state) => {
   return {
     movies: state.movies,
+    searchValue: state.movies.search,
+    request: state.movies.request,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    moviesAction: (moviesRespons) => {
+    moviesPopularityAction: (moviesResponse) => {
       return dispatch({
         type: "GET_MOVIES_BY_POPULARITY",
-        movies: moviesRespons,
+        movies: moviesResponse,
+        request: "popularity",
       });
     },
+    moviesSearchAction: (moviesResponse) => {
+      return dispatch({
+        type: "GET_MOVIES_BY_SEARCH",
+        movies: moviesResponse,
+        request: "search",
+      });
+    },
+    clearAction: () => dispatch({ type: "CLEAR" }),
   };
 };
 
 function App(props) {
-  const { movies, moviesAction } = props;
+  const { movies, request, moviesPopularityAction, clearAction } = props;
 
   const onScroll = () => {
-    const scrolled = window.pageYOffset;
-    const innerHeight = window.innerHeight;
-    const resScrolled = (innerHeight + scrolled) * 1.15;
-    console.log("resScrolled: ", resScrolled);
+    const checker = scrollCalculate();
 
-    const scrollHeight = document.documentElement.scrollHeight;
-
-    if (resScrolled >= scrollHeight) {
+    if (checker) {
       console.log("FETCH ANOTHER PAGE");
-      const list = req.getListByPopularity(movies.page, moviesAction);
+
+      const list = requestAtions.hasOwnProperty(request)
+        ? requestAtions[request](req, props)
+        : requestAtions.error;
+
       list();
       window.onscroll = null;
     }
   };
 
   useEffect(() => {
-    const list = req.getListByPopularity(movies.page, moviesAction);
-    list();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     window.onscroll = onScroll;
     // eslint-disable-next-line
   }, [movies.results]);
 
+  useEffect(() => {
+    clearAction();
+
+    const list = req.getListByPopularity(moviesPopularityAction, 1);
+    list();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className={style.app}>
-      {movies.results.map((item, index) => {
+      {movies.results.map((item) => {
         const rating = item.vote_average;
 
         const squares = Array.from(
           { length: Math.ceil(rating) },
           (_, index) => {
-            let fillIndex =
-              parseFloat((rating - index).toFixed(2)) >= 1
-                ? 1
-                : parseFloat((rating - index).toFixed(2));
-
-            if (rating >= 6) {
-              return {
-                backgroundImage: `linear-gradient(to right, #76db5d ${
-                  fillIndex * 100
-                }%, #fff)`,
-              };
-            } else if (rating < 6 && rating >= 4) {
-              return {
-                backgroundImage: `linear-gradient(to right, #cbce34 ${
-                  fillIndex * 100
-                }%, #fff)`,
-              };
-            } else if (rating < 4) {
-              return {
-                backgroundImage: `linear-gradient(to right, #c01111 ${
-                  fillIndex * 100
-                }%, #fff)`,
-              };
-            }
-
-            return {
-              backgroundImage: `linear-gradient(to right, #fff ${
-                fillIndex * 100
-              }%, #fff)`,
-            };
+            return ratingCircles(index, rating);
           }
         );
 
+        const moviePoster =
+          req.image_url && item.poster_path
+            ? `${req.image_url}${item.poster_path}`
+            : thumbnail;
+
         return (
-          <div className={style.movieCard} key={item.id}>
+          <div className={style.movieCard} key={item.id * Math.random() + 1}>
             <div className={style.movieCard__content}>
-              <img
-                src={`${req.image_url}${item.poster_path}`}
-                alt={item.title}
-              ></img>
+              <img src={moviePoster} alt={item.title}></img>
               <div className={style.content__title}>
                 <p>{item.title}</p>
               </div>
