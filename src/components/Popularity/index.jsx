@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-
 import req from "../../system/Request/request";
 import style from "./styles.module.css";
 import thumbnail from "../../system/img/loading_thumbnail.png";
 import scrollCalculate from "../../system/Setts/scrollCalc";
 import ratingCircles from "../../system/Setts/ratingCalc";
 import requestAtions from "../../system/Setts/requestActions/actions";
+
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
   return {

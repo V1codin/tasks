@@ -64,7 +64,7 @@ function Header(props) {
             <input
               onChange={inputHandler}
               value={searchValue}
-              type="text"
+              type="search"
               placeholder="Search..."
               className={style.search}
             />
