@@ -1,7 +1,14 @@
 import validation from "./validation";
 
-export default function (props) {
-  const { e, setLabelState, createUser, loginAction, history } = props;
+export async function signInHandler(props) {
+  const {
+    e,
+    setLabelState,
+    createUser,
+    loginAction,
+    history,
+    loginHandler,
+  } = props;
 
   const elements = e.target.elements;
   const res = {
@@ -18,12 +25,9 @@ export default function (props) {
   setLabelState(result);
 
   if (checker !== true) {
-    try {
-      createUser(res.email, res.password, loginAction);
-      history.push("/popular");
-    } catch (e) {
-      console.log("code", e.code);
-      throw Error(e.message);
+    const user = await createUser(res.email, res.password, loginAction);
+    if (user) {
+      loginHandler(res.email, res.password, loginAction, history);
     }
   }
 }

@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import FormModule from "./module";
 import bd from "../../../system/Setts/firebase";
-import signInHandler from "./system/signInAction";
+import { signInHandler } from "./system/registrationActions";
+
+// blindmonk46@gmail.com
 
 import { connect } from "react-redux";
 
-const createUser = async (email, pass, dispatchCallback) => {
-  const res = await bd.auth().createUserWithEmailAndPassword(email, pass);
-  if (res) {
-    loginHandler(email, pass, dispatchCallback);
+const createUser = async (email, pass) => {
+  try {
+    const res = await bd.auth().createUserWithEmailAndPassword(email, pass);
+    return res;
+  } catch (e) {
+    console.log("error: ", e.message);
+    return;
   }
 };
 
-const loginHandler = async (email, pass, dispatch) => {
-  const res = await bd.auth().signInWithEmailAndPassword(email, pass);
-  if (res) {
-    console.log("res: ", res);
-    dispatch();
+const loginHandler = async (email, pass, dispatch, history) => {
+  try {
+    const res = await bd.auth().signInWithEmailAndPassword(email, pass);
+    if (res) {
+      dispatch();
+      history.push("/popular");
+    }
+  } catch (e) {
+    console.log("error: ", e.message);
+    return;
   }
 };
 
@@ -55,7 +65,14 @@ function Auth(props) {
 
     console.log("type: ", type);
     if (type === "signIn") {
-      signInHandler({ e, setLabelState, createUser, loginAction, history });
+      signInHandler({
+        e,
+        setLabelState,
+        createUser,
+        loginAction,
+        history,
+        loginHandler,
+      });
 
       return;
     }
