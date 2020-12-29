@@ -1,23 +1,32 @@
 import React, { useState } from "react";
 import FormModule from "./module";
 import bd from "../../../system/Setts/firebase";
-import { signInHandler } from "./system/registrationActions";
+import { signInHandler } from "./system/registrationAction";
+import getFormData from "./system/dataHelper";
 
 // blindmonk46@gmail.com
 
 import { connect } from "react-redux";
 
-const createUser = async (email, pass) => {
+const createUser = async (email, pass, errorFn, setErrorState) => {
   try {
     const res = await bd.auth().createUserWithEmailAndPassword(email, pass);
     return res;
   } catch (e) {
     console.log("error: ", e.message);
+    errorFn(e.message, setErrorState);
     return;
   }
 };
 
-const loginHandler = async (email, pass, dispatch, history) => {
+const loginRequest = async (
+  email,
+  pass,
+  dispatch,
+  history,
+  errorFn,
+  setErrorState
+) => {
   try {
     const res = await bd.auth().signInWithEmailAndPassword(email, pass);
     if (res) {
@@ -26,8 +35,13 @@ const loginHandler = async (email, pass, dispatch, history) => {
     }
   } catch (e) {
     console.log("error: ", e.message);
+    errorFn(e.message, setErrorState);
     return;
   }
+};
+
+const errorHandler = (errorMessage, setErrorFn) => {
+  setErrorFn({ isError: true, errorText: errorMessage });
 };
 
 const mapStateToProps = (state) => {
@@ -56,7 +70,15 @@ function Auth(props) {
     },
   } = props;
 
-  const [labelState, setLabelState] = useState({});
+  const [labelState, setLabelState] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    error: false,
+    errorText: "",
+  });
+
+  const [error, setError] = useState({ isError: false, errorText: "" });
 
   if (isLogged === true) return null;
 
@@ -64,23 +86,43 @@ function Auth(props) {
     e.preventDefault();
 
     console.log("type: ", type);
+
+    const data = getFormData(e.target);
     if (type === "signIn") {
       signInHandler({
-        e,
         setLabelState,
         createUser,
         loginAction,
         history,
-        loginHandler,
+        loginRequest,
+        data,
+
+        setError,
+        errorHandler,
       });
 
+      return;
+    } else if (type === "logIn") {
+      loginRequest(
+        data.email,
+        data.password,
+        loginAction,
+        history,
+        errorHandler,
+        setError
+      );
       return;
     }
   };
 
   return (
     <>
-      <FormModule type={type} submitFn={submit} labelsChecker={labelState} />
+      <FormModule
+        error={error}
+        type={type}
+        submitFn={submit}
+        labelsChecker={labelState}
+      />
     </>
   );
 }

@@ -8,6 +8,7 @@ function FormModule(props) {
     type,
     submitFn,
     labelsChecker: { email, pass, confirmPass },
+    error: { isError, errorText },
   } = props;
   switch (type) {
     case "signIn":
@@ -47,6 +48,13 @@ function FormModule(props) {
             {email && (
               <label className={style.form__label}>Email is not valid</label>
             )}
+            {isError && (
+              <label
+                className={style.form__label + " " + style.form__label_red}
+              >
+                {errorText}
+              </label>
+            )}
             <button>SIGN IN</button>
           </form>
         </div>
@@ -56,8 +64,20 @@ function FormModule(props) {
         <div className={style.formWrapper}>
           <form action="/" className={style.form} onSubmit={submitFn}>
             <h2>Log In</h2>
-            <input type="Email" placeholder="Email" required />
-            <input type="password" placeholder="Password" required />
+            <input type="Email" placeholder="Email" name="email" required />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              required
+            />
+            {isError && (
+              <label
+                className={style.form__label + " " + style.form__label_red}
+              >
+                {errorText}
+              </label>
+            )}
             <button>LOG IN</button>
             <p className={style.form__article}>
               forgot your password?{" "}
