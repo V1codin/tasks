@@ -1,11 +1,12 @@
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import { connect } from "react-redux";
-
 import React from "react";
 import style from "./styles.module.css";
 import list from "./setts.json";
 import req from "../../../system/Request/request";
+import Login from "./components/signIn";
+
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { connect } from "react-redux";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -41,37 +42,40 @@ function Header(props) {
   };
 
   return (
-    <header className={style.header}>
-      <div className={style.header__wrapper}>
-        <nav>
-          <ul className={style.header__list}>
-            {list.map((item) => {
-              return (
-                <li key={item.id}>
-                  <NavLink
-                    exact
-                    className={style.nav__link}
-                    activeClassName={style.nav__link_active}
-                    to={item.href}
-                  >
-                    {item.name}
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
-          <form onSubmit={searchSubmit} className={style.header__search}>
-            <input
-              onChange={inputHandler}
-              value={searchValue}
-              type="search"
-              placeholder="Search..."
-              className={style.search}
-            />
-          </form>
-        </nav>
-      </div>
-    </header>
+    <>
+      <header className={style.header}>
+        <div className={style.header__wrapper}>
+          <nav>
+            <ul className={style.header__list}>
+              {list.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <NavLink
+                      exact
+                      className={style.nav__link}
+                      activeClassName={style.nav__link_active}
+                      to={item.href}
+                    >
+                      {item.name}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+            <form onSubmit={searchSubmit} className={style.header__search}>
+              <input
+                onChange={inputHandler}
+                value={searchValue}
+                type="search"
+                placeholder="Search..."
+                className={style.search}
+              />
+            </form>
+            <Login />
+          </nav>
+        </div>
+      </header>
+    </>
   );
 }
 export default connect(null, mapDispatchToProps)(Header);

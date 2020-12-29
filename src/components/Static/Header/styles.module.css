@@ -26,23 +26,24 @@ nav {
   color: #ffffff;
 }
 .header__search {
-  margin: 0 35px 0 auto;
+  margin: 0 15px 0 auto;
 }
 .search {
   width: 200px;
   padding: 0.5rem 1.5rem;
   font-size: 0.9em;
-  color: #ffffff;
-  background-color: #183481;
+  font-weight: 600;
+  color: #183481;
+  background-color: #fff;
   border-radius: 25px;
   outline: none;
 }
 .search:focus {
-  border: 2px solid #4e7dff;
+  border: 2px solid #1eddff;
 }
 
 .search::placeholder {
-  color: #c0c0c0;
+  color: #616161;
 }
 .nav__link_active {
   background-color: #00bbbb;
