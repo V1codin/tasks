@@ -5,7 +5,7 @@ import req from "../../../system/Request/request";
 import Login from "./components/signIn";
 import GamburgerBtn from "../../../modules/menuBtn/";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { useMemo } from "react";
@@ -29,6 +29,7 @@ function Header(props) {
   const [searchValue, setSearchValue] = useState("");
 
   const [isShown, setIsShown] = useState(null);
+  const history = useHistory();
 
   const headerClassHandler = (checker) => {
     if (checker === true) {
@@ -55,6 +56,8 @@ function Header(props) {
     );
     moviesHandler();
     setSearchValue("");
+
+    history.push("/search");
   };
 
   return (
