@@ -4,9 +4,11 @@ export async function signInHandler(props) {
   const {
     setLabelState,
     createUser,
-    loginAction,
     history,
+    /*
     loginRequest,
+    loginAction,
+    */
     data,
 
     setError,
@@ -19,10 +21,30 @@ export async function signInHandler(props) {
   if (checker !== true) {
     const { email, password } = data;
 
-    const user = await createUser(email, password, errorHandler, setError);
+    const newUser = await createUser(email, password, errorHandler, setError);
 
-    if (user) {
-      loginRequest(data.email, data.password, loginAction, history, setError);
+    if (newUser.user.email) {
+      localStorage.setItem("signInEmail", newUser.user.email);
+      setLabelState({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        error: false,
+        errorText: "",
+      });
+
+      setError({ isError: false, errorText: "" });
+      history.push("/auth/logIn");
     }
+
+    /*
+    loginRequest(
+      newUser.user.email,
+      data.password,
+      loginAction,
+      history,
+      setError
+    );
+    */
   }
 }

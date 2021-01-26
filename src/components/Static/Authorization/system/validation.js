@@ -7,6 +7,7 @@ export default function (obj) {
     email: false,
     pass: false,
     confirmPass: false,
+    name: false,
   };
 
   if (!emailMask.test(email)) {

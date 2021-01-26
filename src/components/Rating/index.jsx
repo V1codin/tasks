@@ -5,6 +5,7 @@ import thumbnail from "../../system/img/loading_thumbnail.png";
 import scrollCalculate from "../../system/Setts/scrollCalc";
 import ratingCircles from "../../system/Setts/ratingCalc";
 import requestAtions from "../../system/Setts/requestActions/actions";
+import CardButtons from "../../modules/userBtns/";
 
 import { connect } from "react-redux";
 import { useEffect } from "react";
@@ -108,6 +109,7 @@ function Rating(props) {
             </div>
             <div className={style.movieCard__info}>
               <p>{item.release_date}</p>
+              <CardButtons />
               <section>{item.overview}</section>
             </div>
           </div>

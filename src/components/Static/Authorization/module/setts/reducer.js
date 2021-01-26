@@ -1,5 +1,7 @@
+const checker = localStorage.getItem("isLogged") === "true" ? true : false;
+
 const init = {
-  isLogged: false,
+  isLogged: checker,
 };
 
 export default function (state = init, { type }) {

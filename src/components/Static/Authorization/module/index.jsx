@@ -10,6 +10,9 @@ function FormModule(props) {
     labelsChecker: { email, pass, confirmPass },
     error: { isError, errorText },
   } = props;
+
+  const cachedEmail = localStorage.getItem("signInEmail") || "";
+
   switch (type) {
     case "signIn":
       return (
@@ -64,7 +67,13 @@ function FormModule(props) {
         <div className={style.formWrapper}>
           <form action="/" className={style.form} onSubmit={submitFn}>
             <h2>Log In</h2>
-            <input type="Email" placeholder="Email" name="email" required />
+            <input
+              type="Email"
+              placeholder="Email"
+              name="email"
+              defaultValue={cachedEmail}
+              required
+            />
             <input
               type="password"
               placeholder="Password"

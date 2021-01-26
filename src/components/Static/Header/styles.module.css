@@ -1,4 +1,5 @@
 .header {
+  padding: 5px;
   border-radius: 6px;
   max-width: 1200px;
   box-shadow: 2px 6px 5px 3px;
@@ -21,13 +22,13 @@ nav {
 }
 .header__list {
   display: flex;
-  border: 2px solid red;
   margin: auto;
   color: #ffffff;
 }
 .header__search {
   margin: 0 15px 0 auto;
 }
+
 .search {
   width: 200px;
   padding: 0.5rem 1.5rem;
@@ -45,11 +46,10 @@ nav {
 .search::placeholder {
   color: #616161;
 }
-.nav__link_active {
-  background-color: #00bbbb;
-}
+
 .nav__link {
   display: block;
+  position: relative;
   padding: 10px;
   color: #ffffff;
   text-decoration: none;
@@ -57,6 +57,92 @@ nav {
   text-align: center;
   font-weight: bold;
 }
-.nav__link:hover {
-  background-color: #00ffff;
+
+.nav__link:after {
+  display: block;
+  position: absolute;
+  bottom: 2px;
+  left: 15%;
+  width: 0;
+  height: 2px;
+  background-color: #00f335;
+  content: "";
+  transition: width 0.2s ease-out;
+}
+
+.nav__link:hover:after,
+.nav__link_active:after {
+  width: 70%;
+}
+.nav__link:hover:after {
+  background-color: #00a650;
+}
+
+.gamburgerView {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .gamburgerView {
+    display: inline-block !important;
+  }
+  .header__wrapper {
+    width: 150px;
+    height: auto;
+    margin: 0;
+    padding: 5px;
+  }
+  .header {
+    transform: translateX(120vw);
+    position: fixed;
+    top: 56vh;
+    box-shadow: 1px 1px 2.5px 1.5px;
+    flex-direction: column;
+    padding: 0;
+    z-index: 8000;
+    background-color: #0d1b41ab;
+  }
+  .header_rollIn {
+    animation: RollIn 0.7s ease-in-out 0s 1 forwards;
+  }
+
+  .header_rollOut {
+    animation: RollOut 0.7s ease-in-out 0s 1 forwards;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+  .header__list {
+    flex-direction: column;
+  }
+
+  .search {
+    width: 120px;
+    padding: 0.2em 1.5rem;
+  }
+  .header__search {
+    margin: 15px auto 0 auto;
+  }
+
+  .nav__link {
+    padding: 8px;
+  }
+}
+
+@keyframes RollIn {
+  from {
+    transform: translateX(120vw);
+  }
+  to {
+    transform: translateX(calc(100vw - 145px));
+  }
+}
+@keyframes RollOut {
+  from {
+    transform: translateX(calc(100vw - 145px));
+  }
+  to {
+    transform: translateX(120vw);
+  }
 }

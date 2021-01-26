@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import FormModule from "./module";
 import bd from "../../../system/Setts/firebase";
 import { signInHandler } from "./system/registrationAction";
-import getFormData from "./system/dataHelper";
-
-// blindmonk46@gmail.com
+import { getFormData, clearData } from "./system/dataHelper";
 
 import { connect } from "react-redux";
 
 const createUser = async (email, pass, errorFn, setErrorState) => {
   try {
     const res = await bd.auth().createUserWithEmailAndPassword(email, pass);
+
+    const user = await bd.auth().currentUser;
+
+    // user.sendEmailVerification();
+
     return res;
   } catch (e) {
-    console.log("error: ", e.message);
+    console.log("error console: ", e.message);
     errorFn(e.message, setErrorState);
-    return;
+    return {
+      user: {
+        email: undefined,
+      },
+    };
   }
 };
 
@@ -27,11 +34,16 @@ const loginRequest = async (
   errorFn,
   setErrorState
 ) => {
+  if (email === undefined || pass === undefined) {
+    console.log("Data is undefined");
+    return;
+  }
   try {
     const res = await bd.auth().signInWithEmailAndPassword(email, pass);
     if (res) {
       dispatch();
       history.push("/popular");
+      localStorage.setItem("isLogged", true);
     }
   } catch (e) {
     console.log("error: ", e.message);
@@ -89,6 +101,8 @@ function Auth(props) {
 
     const data = getFormData(e.target);
     if (type === "signIn") {
+      console.log("data: ", data);
+      /*
       signInHandler({
         setLabelState,
         createUser,
@@ -100,8 +114,7 @@ function Auth(props) {
         setError,
         errorHandler,
       });
-
-      return;
+      */
     } else if (type === "logIn") {
       loginRequest(
         data.email,
@@ -111,8 +124,10 @@ function Auth(props) {
         errorHandler,
         setError
       );
-      return;
     }
+
+    clearData(e.target);
+    return;
   };
 
   return (

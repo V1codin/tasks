@@ -1,5 +1,5 @@
 .auth {
-  margin: 0 15px;
+  margin: 0 30px;
   display: flex;
   align-items: center;
 }
@@ -26,4 +26,20 @@
 }
 .auth__control:hover {
   background-color: #476bcf;
+}
+
+@media (max-width: 900px) {
+  .auth {
+    width: 100%;
+    padding: 0 5px;
+    flex-direction: column;
+    margin: 10px auto;
+    align-items: flex-end;
+  }
+  .auth__control {
+    text-align: center;
+    margin-top: 5px;
+    border-radius: 0;
+    width: 100%;
+  }
 }

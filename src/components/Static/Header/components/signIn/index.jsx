@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./styles.module.css";
+import bd from "../../../../../system/Setts/firebase";
 
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -24,7 +25,12 @@ function LoginBlock(props) {
   const { isLogged, logOutAction } = props;
 
   const logoutHandler = () => {
+    bd.auth()
+      .signOut()
+      .then(() => console.log("signed out"))
+      .catch((e) => console.log("sign out error", e));
     logOutAction();
+    localStorage.setItem("isLogged", false);
   };
 
   if (isLogged === true)

@@ -6,6 +6,7 @@ export default {
     } = props;
     return requestObject.getListByRating(moviesRatingAction, page);
   },
+
   search: (requestObject, props) => {
     const {
       searchValue,
@@ -18,6 +19,7 @@ export default {
       page
     );
   },
+
   popularity: (requestObject, props) => {
     const {
       moviesPopularityAction,

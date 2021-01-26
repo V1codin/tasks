@@ -3,10 +3,12 @@ import style from "./styles.module.css";
 import list from "./setts.json";
 import req from "../../../system/Request/request";
 import Login from "./components/signIn";
+import GamburgerBtn from "../../../modules/menuBtn/";
 
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { connect } from "react-redux";
+import { useMemo } from "react";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -26,6 +28,20 @@ function Header(props) {
 
   const [searchValue, setSearchValue] = useState("");
 
+  const [isShown, setIsShown] = useState(null);
+
+  const headerClassHandler = (checker) => {
+    if (checker === true) {
+      return `${style.header} ${style.header_rollIn}`;
+    } else if (checker === false) {
+      return `${style.header} ${style.header_rollOut}`;
+    } else if (checker === null) {
+      return style.header;
+    }
+  };
+
+  const headerClass = useMemo(() => headerClassHandler(isShown), [isShown]);
+
   const inputHandler = (e) => {
     setSearchValue(e.target.value);
   };
@@ -43,7 +59,8 @@ function Header(props) {
 
   return (
     <>
-      <header className={style.header}>
+      <GamburgerBtn menuClass={style.gamburgerView} checkerFn={setIsShown} />
+      <header className={headerClass}>
         <div className={style.header__wrapper}>
           <nav>
             <ul className={style.header__list}>
