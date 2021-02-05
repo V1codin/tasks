@@ -1,6 +1,4 @@
-## Hello My name is Kirill and it's my template of Movie searcher. Based on
-
-The Movie Database API and Firebase API.
+## Hello My name is Kirill and it's my template of Movie searcher. Based on The Movie Database API and Firebase API.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
