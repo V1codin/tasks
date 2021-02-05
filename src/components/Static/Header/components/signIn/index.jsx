@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./styles.module.css";
-import bd from "../../../../../system/Setts/firebase";
+import User from "../user/";
 
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -11,40 +11,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logOutAction: () => {
-      return dispatch({
-        type: "LOGOUT",
-      });
-    },
-  };
-};
-
 function LoginBlock(props) {
-  const { isLogged, logOutAction } = props;
+  const { isLogged } = props;
 
-  const logoutHandler = () => {
-    bd.auth()
-      .signOut()
-      .then(() => console.log("signed out"))
-      .catch((e) => console.log("sign out error", e));
-    logOutAction();
-    localStorage.setItem("isLogged", false);
-  };
+  if (isLogged === true) {
+    return <User />;
+  }
 
-  if (isLogged === true)
-    return (
-      <div className={style.auth}>
-        <button
-          to="/"
-          className={style.auth__control + " " + style.auth__control_sightOut}
-          onClick={logoutHandler}
-        >
-          SIGN OUT
-        </button>
-      </div>
-    );
   return (
     <>
       <div className={style.auth}>
@@ -71,4 +44,4 @@ function LoginBlock(props) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginBlock);
+export default connect(mapStateToProps, null)(LoginBlock);

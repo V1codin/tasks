@@ -29,6 +29,7 @@ function Header(props) {
   const [searchValue, setSearchValue] = useState("");
 
   const [isShown, setIsShown] = useState(null);
+
   const history = useHistory();
 
   const headerClassHandler = (checker) => {

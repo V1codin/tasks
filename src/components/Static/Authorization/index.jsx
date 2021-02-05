@@ -1,80 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import FormModule from "./module";
-import bd from "../../../system/Setts/firebase";
-import { signInHandler } from "./system/registrationAction";
-import { getFormData, clearData } from "./system/dataHelper";
+
+import { useState } from "react";
+import {
+  signInHandler,
+  createUser,
+  loginRequest,
+} from "./setts/registrationAction";
+import { getFormData, clearData, errorHandler } from "./setts/dataHelper";
+import { mStP, mDtP } from "./setts/connectFns";
 
 import { connect } from "react-redux";
-
-const createUser = async (email, pass, errorFn, setErrorState) => {
-  try {
-    const res = await bd.auth().createUserWithEmailAndPassword(email, pass);
-
-    const user = await bd.auth().currentUser;
-
-    // user.sendEmailVerification();
-
-    return res;
-  } catch (e) {
-    console.log("error console: ", e.message);
-    errorFn(e.message, setErrorState);
-    return {
-      user: {
-        email: undefined,
-      },
-    };
-  }
-};
-
-const loginRequest = async (
-  email,
-  pass,
-  dispatch,
-  history,
-  errorFn,
-  setErrorState
-) => {
-  if (email === undefined || pass === undefined) {
-    console.log("Data is undefined");
-    return;
-  }
-  try {
-    const res = await bd.auth().signInWithEmailAndPassword(email, pass);
-    if (res) {
-      dispatch();
-      history.push("/popular");
-      localStorage.setItem("isLogged", true);
-    }
-  } catch (e) {
-    console.log("error: ", e.message);
-    errorFn(e.message, setErrorState);
-    return;
-  }
-};
-
-const errorHandler = (errorMessage, setErrorFn) => {
-  setErrorFn({ isError: true, errorText: errorMessage });
-};
-
-const mapStateToProps = (state) => {
-  return {
-    isLogged: state.auth.isLogged,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loginAction: () => {
-      return dispatch({
-        type: "LOGIN",
-      });
-    },
-  };
-};
 
 function Auth(props) {
   const {
     loginAction,
+    logoutAction,
     isLogged,
     history,
     match: {
@@ -94,15 +35,17 @@ function Auth(props) {
 
   if (isLogged === true) return null;
 
+  const logoutHandler = ((dispatch) => {
+    return (wrapper) => {
+      return wrapper(dispatch);
+    };
+  })(logoutAction);
+
   const submit = (e) => {
     e.preventDefault();
 
-    console.log("type: ", type);
-
     const data = getFormData(e.target);
     if (type === "signIn") {
-      console.log("data: ", data);
-      /*
       signInHandler({
         setLabelState,
         createUser,
@@ -114,7 +57,7 @@ function Auth(props) {
         setError,
         errorHandler,
       });
-      */
+      return;
     } else if (type === "logIn") {
       loginRequest(
         data.email,
@@ -122,7 +65,8 @@ function Auth(props) {
         loginAction,
         history,
         errorHandler,
-        setError
+        setError,
+        logoutHandler
       );
     }
 
@@ -142,4 +86,4 @@ function Auth(props) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mStP, mDtP)(Auth);

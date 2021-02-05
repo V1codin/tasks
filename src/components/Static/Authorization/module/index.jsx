@@ -8,10 +8,10 @@ function FormModule(props) {
     type,
     submitFn,
     labelsChecker: { email, pass, confirmPass },
-    error: { isError, errorText },
+    error: { login, errorText, signIn },
   } = props;
 
-  const cachedEmail = localStorage.getItem("signInEmail") || "";
+  const cachedEmail = "";
 
   switch (type) {
     case "signIn":
@@ -19,7 +19,15 @@ function FormModule(props) {
         <div className={style.formWrapper}>
           <form action="/" className={style.form} onSubmit={submitFn}>
             <h2>Sign In</h2>
-            {/* <input type="text" placeholder="Username" required /> */}
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+            {email && (
+              <label className={style.form__label}>Email is not valid</label>
+            )}
             <input
               type="password"
               name="password"
@@ -42,16 +50,7 @@ function FormModule(props) {
                 Passwords should match
               </label>
             )}
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-            />
-            {email && (
-              <label className={style.form__label}>Email is not valid</label>
-            )}
-            {isError && (
+            {signIn && (
               <label
                 className={style.form__label + " " + style.form__label_red}
               >
@@ -80,7 +79,7 @@ function FormModule(props) {
               name="password"
               required
             />
-            {isError && (
+            {login && (
               <label
                 className={style.form__label + " " + style.form__label_red}
               >
@@ -90,7 +89,15 @@ function FormModule(props) {
             <button>LOG IN</button>
             <p className={style.form__article}>
               forgot your password?{" "}
-              <Link to="/auth/password&reset">click here</Link>
+              <Link to="/auth/password&reset" className={style.form__link}>
+                click here
+              </Link>
+            </p>
+            <p className={style.form__article}>
+              don't have an account?{" "}
+              <Link to="/auth/signIn" className={style.form__link}>
+                click here
+              </Link>
             </p>
           </form>
         </div>

@@ -28,6 +28,7 @@ class Req {
       }
     };
   }
+
   getListByPopularity(stateFn, page) {
     return async () => {
       try {

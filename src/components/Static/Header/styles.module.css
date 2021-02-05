@@ -1,7 +1,6 @@
 .header {
   padding: 5px;
   border-radius: 6px;
-  max-width: 1200px;
   box-shadow: 2px 6px 5px 3px;
   display: flex;
   align-items: center;
@@ -17,7 +16,7 @@ nav {
 }
 .header__wrapper {
   width: 100%;
-  margin: 10px auto;
+  margin: 0 auto;
   max-width: 1200px;
 }
 .header__list {
@@ -26,7 +25,7 @@ nav {
   color: #ffffff;
 }
 .header__search {
-  margin: 0 15px 0 auto;
+  margin: 0 0 0 auto;
 }
 
 .search {
@@ -70,12 +69,16 @@ nav {
   transition: width 0.2s ease-out;
 }
 
-.nav__link:hover:after,
-.nav__link_active:after {
+.nav__link:hover::after,
+.nav__link_active::after {
   width: 70%;
 }
-.nav__link:hover:after {
+
+.nav__link:hover::after {
   background-color: #00a650;
+}
+.nav__link_active:hover::after {
+  background-color: #ff0000;
 }
 
 .gamburgerView {

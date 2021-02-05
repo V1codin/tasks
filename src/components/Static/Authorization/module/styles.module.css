@@ -39,6 +39,7 @@ h2 {
   color: #f3f307;
   text-align: center;
   font-family: system-ui;
+  word-break: break-word;
 }
 .form__label_red {
   font-weight: bold;
@@ -80,4 +81,7 @@ h2 {
 }
 .form > button:hover {
   background-color: #03c4c4;
+}
+.form__link:hover {
+  color: #d6ee02;
 }

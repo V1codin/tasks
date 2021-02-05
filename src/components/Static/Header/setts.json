@@ -13,5 +13,10 @@
     "name": "Top Rating",
     "href": "/rating",
     "id": "3"
+  },
+  {
+    "name": "Profile",
+    "href": "/profile",
+    "id": "4"
   }
 ]

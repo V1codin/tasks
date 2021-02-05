@@ -3,7 +3,7 @@ import style from "./styles.module.css";
 import thumbnail from "../../system/img/loading_thumbnail.png";
 import scrollCalculate from "../../system/Setts/scrollCalc";
 import ratingCircles from "../../system/Setts/ratingCalc";
-import CardButtons from "../../modules/userBtns/";
+import Card from "../../modules/movieCard";
 import requestAtions from "../../system/Setts/requestActions/actions";
 import req from "../../system/Request/request";
 
@@ -66,7 +66,7 @@ function Search(props) {
       {movies.results.map((item) => {
         const rating = item.vote_average;
 
-        const squares = Array.from(
+        const circles = Array.from(
           { length: Math.ceil(rating) },
           (_, index) => {
             return ratingCircles(index, rating);
@@ -79,32 +79,12 @@ function Search(props) {
             : thumbnail;
 
         return (
-          <div className={style.movieCard} key={item.id * Math.random() + 1}>
-            <div className={style.movieCard__content}>
-              <img src={moviePoster} alt={item.title}></img>
-              <div className={style.content__title}>
-                <p>{item.title}</p>
-              </div>
-              <div className={style.movieCard__rate}>
-                <p>{item.vote_average}</p>
-                <div style={squares[0]} className={style.rate__block}></div>
-                <div style={squares[1]} className={style.rate__block}></div>
-                <div style={squares[2]} className={style.rate__block}></div>
-                <div style={squares[3]} className={style.rate__block}></div>
-                <div style={squares[4]} className={style.rate__block}></div>
-                <div style={squares[5]} className={style.rate__block}></div>
-                <div style={squares[6]} className={style.rate__block}></div>
-                <div style={squares[7]} className={style.rate__block}></div>
-                <div style={squares[8]} className={style.rate__block}></div>
-                <div style={squares[9]} className={style.rate__block}></div>
-              </div>
-            </div>
-            <div className={style.movieCard__info}>
-              <p>{item.release_date}</p>
-              <CardButtons />
-              <section>{item.overview}</section>
-            </div>
-          </div>
+          <Card
+            item={item}
+            poster={moviePoster}
+            rating={circles}
+            key={item.id * Math.random() + 1}
+          />
         );
       })}
     </div>
