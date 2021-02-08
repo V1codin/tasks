@@ -15,7 +15,9 @@ function UserValues(props) {
     avatarInputRef,
     fileHandler,
   } = props;
+
   const value = state[valueName].value;
+
   if (valueName === "photoURL") {
     const useSylesForFav = makeStyles((theme) => ({
       arrow: {

@@ -5,6 +5,11 @@ export const getFormData = (target) => {
   if (elements.length > 0) {
     for (let item of elements) {
       if (item.name !== "") {
+        if (item.name !== "displayName") {
+          const val = item.value.replace(/\s+/g, "");
+          res[item.name] = val;
+          continue;
+        }
         res[item.name] = item.value;
       }
     }
@@ -65,4 +70,25 @@ export const getFileUrl = (target, callBack) => {
   if (file) {
     reader.readAsDataURL(file);
   }
+};
+
+export const createData = (prop = {}, state = {}) => {
+  const res = {
+    ...state,
+  };
+
+  if (Object.keys(prop).length > 0) {
+    for (let item in prop) {
+      if (res[item] !== undefined) {
+        res[item].value = prop[item] === "" ? "Not Set" : prop[item];
+      } else {
+        res[item] = {
+          name: item,
+          value: prop[item] === "" ? "Not Set" : prop[item],
+        };
+      }
+    }
+  }
+
+  return res;
 };

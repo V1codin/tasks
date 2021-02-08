@@ -5,7 +5,6 @@ import "firebase/firestore";
 const {
   REACT_APP_API__KEY_FIREBASE_AUTH,
   REACT_APP_AUTH__DOMAIN_FIREBASE_AUTH,
-  REACT_APP_PROJECT__ID_FIREBASE_ID,
   REACT_APP_STORAGE__BUCKET_FIREBASE_AUTH,
   REACT_APP_MESSAGING__SENDER__ID_FIREBASE_AUTH,
   REACT_APP_APP__ID_FIREBASE_AUTH,
@@ -14,22 +13,15 @@ const {
 const firebaseConfig = {
   apiKey: REACT_APP_API__KEY_FIREBASE_AUTH,
   authDomain: REACT_APP_AUTH__DOMAIN_FIREBASE_AUTH,
-  projectId: REACT_APP_PROJECT__ID_FIREBASE_ID,
+  projectId: "movie-searcher-a4582",
   storageBucket: REACT_APP_STORAGE__BUCKET_FIREBASE_AUTH,
   messagingSenderId: REACT_APP_MESSAGING__SENDER__ID_FIREBASE_AUTH,
   appId: REACT_APP_APP__ID_FIREBASE_AUTH,
 };
 
 export const db = firebase.initializeApp(firebaseConfig, "Movies 46");
-
-/*
-db.firestore()
-  .collection("users")
-  .get()
-  .then((querySnapshot) => {
-    console.log("querySnapshot: ", querySnapshot);
-  });
-*/
+export const firestore = db.firestore();
+export const usersCollection = firestore.collection("users");
 
 export const logoutWrapper = (dispatchLogout) => {
   return () => {
@@ -44,5 +36,26 @@ export const logoutWrapper = (dispatchLogout) => {
       })
       .catch((e) => console.log("sign out error", e));
   };
+};
+
+export const createUserDataCollation = async (userData, rootCollection) => {
+  const { uid, email } = userData;
+  const userDoc = rootCollection.doc(uid);
+  try {
+    await userDoc.set({
+      email: email,
+      photoURL: "",
+      displayName: "",
+    });
+
+    await userDoc.collection("movies").doc("favorites").set({
+      data: [],
+    });
+    await userDoc.collection("movies").doc("liked").set({
+      data: [],
+    });
+  } catch (e) {
+    console.error("create collation error: ", e);
+  }
 };
 // export const auth = db.auth;

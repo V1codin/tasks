@@ -1,17 +1,18 @@
 import React from "react";
 import style from "./styles.module.css";
 import UserValue from "../user/";
+import EditIcon from "@material-ui/icons/Edit";
 
 import { Link, Input } from "@material-ui/core";
 import { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { mStP, mDtP } from "./setts/connectFns";
-import { db } from "../../../../system/Setts/firebase";
+import { db, usersCollection } from "../../../../system/Setts/firebase";
 import {
   getFormData,
   getFileUrl,
+  createData,
 } from "../../../Static/Authorization/setts/dataHelper";
-import { createData } from "../../setts/helper";
 
 function ProfileTable(props) {
   const { customClasses, reduxState, updateUser } = props;
@@ -29,7 +30,6 @@ function ProfileTable(props) {
 
   useEffect(() => {
     setUserData({
-      ...userData,
       ...createData(reduxState, userData),
     });
 
@@ -41,7 +41,7 @@ function ProfileTable(props) {
   const avatarInputRef = useRef(null);
 
   const edit = (e) => {
-    const name = e.target.name;
+    const name = e.currentTarget.name;
 
     setInputs({
       ...inputs,
@@ -50,49 +50,43 @@ function ProfileTable(props) {
   };
 
   const fileHandler = (e) => {
-    getFileUrl(e.target, (src) => {
-      /*
-      const user = db.auth().currentUser;
-      user.updateProfile({
-        photoURL: src,
-      });
-*/
-      setUserData({
-        ...userData,
-        photoURL: {
-          ...userData.photoURL,
-          value: src,
-        },
-      });
+    getFileUrl(e.target, async (src) => {
+      const userId = db.auth().currentUser.uid;
+
+      try {
+        await usersCollection.doc(userId).update({
+          photoURL: src,
+        });
+
+        const userDoc = await usersCollection.doc(userId).get();
+        const dataFromServer = userDoc.data();
+
+        updateUser(dataFromServer);
+      } catch (e) {
+        console.log("update collection error for avatar", e);
+      }
     });
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
 
     const data = getFormData(e.target);
-    const user = db.auth().currentUser;
+    const userId = db.auth().currentUser.uid;
 
-    user.updateProfile({
-      ...data,
-    });
+    try {
+      await usersCollection.doc(userId).update({
+        ...data,
+      });
 
-    updateUser(data);
-    setInputs({});
+      const userDoc = await usersCollection.doc(userId).get();
+      const dataFromServer = userDoc.data();
 
-    /*
-    const files = e.target.files;
-    console.log("files: ", files);
-    const data = getFormData(e.target);
-    const user = db.auth().currentUser;
-    
-    user.updateProfile({
-      ...data,
-    });
-    
-    updateUser(data);
-    setInputs({});
-    */
+      updateUser(dataFromServer);
+      setInputs({});
+    } catch (e) {
+      console.log("update collection error", e);
+    }
   };
 
   return (
@@ -116,19 +110,21 @@ function ProfileTable(props) {
                   avatarInputRef={avatarInputRef}
                   fileHandler={fileHandler}
                 />
-                <Link
-                  component="button"
-                  name={item}
-                  className={
-                    inputs[item]
-                      ? customClasses.activeLink + " " + customClasses.item
-                      : customClasses.link + " " + customClasses.item
-                  }
-                  variant="body1"
-                  onClick={edit}
-                >
-                  Edit
-                </Link>
+                {item !== "email" ? (
+                  <Link
+                    component="button"
+                    name={item}
+                    className={
+                      inputs[item]
+                        ? customClasses.activeLink + " " + customClasses.item
+                        : customClasses.link + " " + customClasses.item
+                    }
+                    variant="body1"
+                    onClick={edit}
+                  >
+                    <EditIcon />
+                  </Link>
+                ) : null}
               </div>
               {inputs[item] && (
                 <form

@@ -1,5 +1,10 @@
 import validation from "./validation";
-import { db, logoutWrapper } from "../../../../system/Setts/firebase";
+import {
+  db,
+  logoutWrapper,
+  createUserDataCollation,
+  usersCollection,
+} from "../../../../system/Setts/firebase";
 
 export const signInHandler = async (props) => {
   const {
@@ -20,23 +25,7 @@ export const signInHandler = async (props) => {
     const newUser = await createUser(email, password, errorHandler, setError);
 
     if (newUser.user.email) {
-      /*
-      const {
-        user: { uid, email },
-      } = newUser;
-
-      try {
-        const createUsersCollaction = await firestore.collection("users").add({
-          [uid]: {
-            email: email,
-          },
-        });
-
-        console.log("createUsersCollaction: ", createUsersCollaction);
-      } catch (e) {
-        console.error("create collation error: ", e);
-      }
-      */
+      await createUserDataCollation(newUser.user, usersCollection);
 
       setLabelState({
         email: "",
@@ -55,9 +44,9 @@ export const signInHandler = async (props) => {
 export const createUser = async (email, pass, errorFn, setErrorState) => {
   try {
     const res = await db.auth().createUserWithEmailAndPassword(email, pass);
-
-    // const user = await db.auth.currentUser;
-    // user.sendEmailVerification();
+    res.user.updateProfile({
+      registratinoTime: new Date().toString(),
+    });
 
     return res;
   } catch (e) {
@@ -89,29 +78,29 @@ export const loginRequest = async (
     const res = await db.auth().signInWithEmailAndPassword(email, pass);
 
     if (res) {
-      /*
-      firestore
-        .collection("users")
-        .get()
-        .then((querySnapshot) => {
-          console.log("querySnapshot: ", querySnapshot);
-        });
-        */
-      const { user } = res;
+      const {
+        user: { uid },
+      } = res;
 
-      const userData = {
-        photoURL: user.photoURL,
-        displayName: user.displayName,
-      };
+      const doc = await usersCollection.doc(uid).get();
+
+      const userData = doc.data();
 
       const logout = logoutHandler(logoutWrapper);
 
       db.auth().onAuthStateChanged((curUser) => {
         if (curUser) {
           dispatch(userData);
-
           localStorage.setItem("isLogged", true);
-          history.push("/profile");
+
+          const cashedId = localStorage.getItem("filmId");
+          localStorage.setItem("filmId", -1);
+
+          if (cashedId === null || cashedId === "-1") {
+            history.push("/");
+          } else {
+            history.push(`/movies/${cashedId}`);
+          }
         } else {
           console.log("log out");
           logout();

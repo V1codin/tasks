@@ -28,6 +28,8 @@ const mapStateToProps = (state) => {
 const setAvatarClasses = makeStyles((theme) => ({
   avatar: {
     backgroundColor: "green",
+    width: theme.spacing(5.5),
+    height: theme.spacing(5.5),
   },
 }));
 
@@ -59,8 +61,9 @@ function User(props) {
     const res = db.auth();
     const current = res.currentUser;
     if (current !== null) {
-      const avatarLink = userData.photoURL ?? "";
-      const userName = userData.displayName ?? "Your Name";
+      const avatarLink = userData.photoURL === "" ? "" : userData.photoURL;
+      const userName =
+        userData.displayName === "" ? "Your Name" : userData.displayName;
       setUser({
         ...user,
         avatarLink: avatarLink,
@@ -81,7 +84,7 @@ function User(props) {
     <div className={style.container} onClick={logoutHandler}>
       <FavoritToolTip title={user.name}>
         <Avatar
-          alt={user.name}
+          alt={user.name === "Your Name" ? "A" : user.name}
           src={user.avatarLink}
           className={avatarClasses.avatar}
         />

@@ -41,11 +41,15 @@ function CardBtns(props) {
 
   const classes = useStyles();
 
+  const loginClick = () => {
+    localStorage.setItem("filmId", id);
+  };
+
   switch (isLogged) {
     case true:
       return (
         <div className={style.container + " " + style.logged__container}>
-          <FavoritToolTip title="Add to Favorite">
+          <FavoritToolTip title="Add to Liked">
             <button
               className={style.container__button}
               onClick={() => console.log(id)}
@@ -53,7 +57,7 @@ function CardBtns(props) {
               <FavoriteIcon className={classes.root} fontSize="small" />
             </button>
           </FavoritToolTip>
-          <FavoritToolTip title="Add to your List">
+          <FavoritToolTip title="Add to Favorites">
             <button className={style.container__button}>
               <PlaylistAddCheckIcon className={classes.root} fontSize="small" />
             </button>
@@ -64,7 +68,7 @@ function CardBtns(props) {
       return (
         <div className={style.container + " " + style.unLogged__container}>
           <FavoritToolTip title="Log In">
-            <NavLink to="/auth/logIn">
+            <NavLink to="/auth/logIn" onClick={loginClick}>
               <button className={style.container__button}>
                 <MoreHorizIcon />
               </button>
