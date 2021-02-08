@@ -1,5 +1,7 @@
 ## Hello My name is Kirill and it's my template of Movie searcher. Based on The Movie Database API and Firebase API.
 
+The project is also available at [Movies46.hostronavt.ru](http://movies46.hostronavt.ru).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
